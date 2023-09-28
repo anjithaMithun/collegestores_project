@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    login our website
+{% endblock %}
+{% block tittle %}
+   Login
+{% endblock %}
+{% block content %}
+
+
+    <style>
+        body{
+        background-color:lightblue;}
+    </style>
+    <h2>LOGIN</h2>
+
+<body>
+<form action="login" method="post">
+    {% csrf_token%}
+    <input type="text" name="username" placeholder="Enter the Username" ><br><br>
+    <input type="password" name="password" placeholder="Enter Your Password"><br><br>
+	<button type="submit" class="btn btn-success">Login</button>
+
+</form>
+</body>
+{% endblock %}

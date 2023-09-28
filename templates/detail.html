@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    login our website
+{% endblock %}
+{% block title %}
+   Login
+{% endblock %}
+{% block content %}
+<head>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var departmentSelect = document.getElementById("selectedDepartment");
+            var courseSelect = document.getElementById("selectedCourse");
+            var purposeFields = document.getElementById("purpose-fields");
+            var form = document.getElementById("myForm");
+
+            // Static data for courses based on departments
+            var courseData = {
+                "Department 1": ["Course 1", "Course 2"],
+                "Department 2": ["Course 3", "Course 4"],
+            };
+
+            // Function to update the course dropdown based on the selected department
+            function updateCourseDropdown(selectedDepartment) {
+                // Clear the course dropdown
+                courseSelect.innerHTML = "";
+
+                // Populate the course dropdown with options based on the selected department
+                var courses = courseData[selectedDepartment];
+                if (courses) {
+                    courses.forEach(function (course) {
+                        var option = document.createElement("option");
+                        option.value = course;
+                        option.text = course;
+                        courseSelect.appendChild(option);
+                    });
+                }
+            }
+
+            departmentSelect.addEventListener("change", function () {
+                var selectedDepartment = departmentSelect.value;
+                updateCourseDropdown(selectedDepartment);
+
+                // Clear the course selection and hide purpose fields when department changes
+                courseSelect.value = "";
+                purposeFields.style.display = "none";
+            });
+
+            courseSelect.addEventListener("change", function () {
+                // Show purpose fields when a course is selected
+                purposeFields.style.display = "block";
+            });
+
+            form.addEventListener("submit", function (event) {
+                var nameInput = document.getElementsByName("Name")[0];
+                var dobInput = document.getElementsByName("dob")[0];
+                var ageInput = document.getElementsByName("age")[0];
+                var genderInput = document.querySelector('input[name="gender"]:checked');
+                var phoneInput = document.getElementsByName("phone")[0];
+                var emailInput = document.getElementsByName("email")[0];
+                var addressInput = document.getElementsByName("address")[0];
+                var departmentInput = document.getElementById("selectedDepartment");
+                var courseInput = document.getElementById("selectedCourse");
+
+                if (
+                    nameInput.value === "" ||
+                    dobInput.value === "" ||
+                    ageInput.value === "" ||
+                    !genderInput ||
+                    phoneInput.value === "" ||
+                    emailInput.value === "" ||
+                    addressInput.value === "" ||
+                    departmentInput.value === "" ||
+                    courseInput.value === ""
+                ) {
+                    alert("Please fill in all fields before submitting.");
+                    event.preventDefault(); // Prevent the form from submitting
+                }
+            });
+        });
+    </script>
+</head>
+<style>
+    body {
+        background-color: lightblue;
+    }
+    h6.btn.btn-secondary {
+    font-size: 18px;
+    background-color: #555555;
+    color: #fff;
+    padding: 5px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+</style>
+<h2>DETAILS</h2>
+<body>
+<form id="myForm" action="login" method="post">
+    {% csrf_token %}
+    <input type="text" name="Name" placeholder="Enter your Name" ><br><br>
+    <input type="date" name="dob" placeholder="Enter Your dob"><br><br>
+    <input type="number" name="age" placeholder="Enter Your age"><br><br>
+    <input placeholder="Gender">
+    <label for="male">Male</label>
+    <input type="radio" name="gender" id="male" value="male" checked>
+    <label for="female">Female</label>
+    <input type="radio" name="gender" id="female" value="female"><br><br>
+    <input type="number" name="phone" placeholder="Enter the mobile no" ><br><br>
+    <input type="email" name="email" placeholder="Enter the email_id" ><br><br>
+    <input type="text" name="address" placeholder="Enter the address" ><br><br>
+    <input type="hidden" name="department" id="selectedDepartment" value="">
+
+    <label for="selectedDepartment">Select Department:</label>
+    <select id="selectedDepartment" name="selectedDepartment">
+        <option value="">-- Select Department --</option>
+        {% for cat in links %}
+            <option value="{{ cat.name }}">{{ cat.name }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="selectedCourse">Select Course:</label>
+    <select id="selectedCourse" name="selectedCourse">
+        <option value="">-- Select Course --</option>
+        {% for course in courses %}
+            <option value="{{ course.name }}">{{ course.name }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <div id="purpose-fields" style="display">
+        <!-- Fields related to the selected course go here -->
+
+        <label for="purpose">Select Purpose:</label>
+        <select id="purpose" name="purpose">
+            <option value="enquiry">Enquiry</option>
+            <option value="place_order">Place Order</option>
+            <option value="return">Return</option>
+        </select>
+    </div>
+
+    <div>
+        <h6 class="btn btn-secondary">Materials provide</h6>
+        <div>
+            <input type="checkbox" id="scales" name="scales" checked />
+            <label for="scales">Pen</label>
+        </div>
+        <div>
+            <input type="checkbox" id="horns" name="horns" />
+            <label for="horns">Exam paper</label>
+        </div>
+        <div>
+            <input type="checkbox" id="horns" name="horns" />
+            <label for="horns">Notebook</label>
+        </div>
+    </div><br>
+
+   <a href="{% url 'collegeapp:index' %}">
+        <button type="submit" onclick="return confirm('Order confirmed! Continue?')">Submit</button>
+    </a>
+
+    <a href="{% url 'collegeapp:register' %}">
+        <button type="button">Logout</button>
+    </a>
+</form>
+</body>
+{% endblock %}
+

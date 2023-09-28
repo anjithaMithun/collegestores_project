@@ -1,0 +1,36 @@
+h6.btn.btn-secondary {
+    font-size: 18px;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* Style the checkbox labels */
+input[type="checkbox"] {
+    display: none; /* Hide the default checkbox */
+}
+
+/* Style the custom checkboxes */
+input[type="checkbox"] + label::before {
+    content: "\2714"; /* Unicode checkmark character */
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007bff;
+    border-radius: 3px;
+    margin-right: 10px;
+    text-align: center;
+    line-height: 18px;
+    color: #007bff;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Style the custom checkboxes when checked */
+input[type="checkbox"]:checked + label::before {
+    background-color: #007bff;
+    color: #fff;
+    content: "\2713"; /* Unicode heavy checkmark character */
+}
